@@ -1,6 +1,8 @@
 // Copyright Mad Skald Studios
 
 
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 #include "OpenDoor.h"
 #include "GameFramework/Actor.h"
 
@@ -31,12 +33,8 @@ void UOpenDoor::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("%s OPEN DOOR COMPONENT ON OBJECT, NO PRESSUREPLATE SET!"), *GetOwner()->GetName());
 	}
 
-
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 	// ...
-	
-	
-
-	
 }
 
 
@@ -50,7 +48,11 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	
 	// Door Open Math
 	if (PressurePlate && PressurePlate->IsOverlappingActor(ActorThatOpens)) {
+
 		OpenDoor(DeltaTime);
+	}
+	else {
+		CloseDoor(DeltaTime);
 	}
 
 }
@@ -58,6 +60,14 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 void UOpenDoor::OpenDoor(float DeltaTime)
 {
 	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * 0.6f);
+	FRotator DoorRotation = GetOwner()->GetActorRotation();
+	DoorRotation.Yaw = CurrentYaw;
+	GetOwner()->SetActorRotation(DoorRotation);
+}
+
+void UOpenDoor::CloseDoor(float DeltaTime)
+{
+	CurrentYaw = FMath::Lerp(CurrentYaw, InitialYaw, DeltaTime * 2.5f);
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation(DoorRotation);
