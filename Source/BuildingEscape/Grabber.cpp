@@ -1,5 +1,6 @@
 // Copyright Mad Skald Studios
 
+#include "CollisionQueryParams.h"
 #include "DrawDebugHelpers.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
@@ -44,11 +45,6 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		OUT PlayerViewpointRotation
 	);
 
-	/*UE_LOG(LogTemp, Warning, TEXT("VIEW LOC: %s VIEW ROT: %s"),
-		*PlayerViewpointLocation.ToString(),
-		*PlayerViewpointRotation.ToString()
-	);*/
-
 	//Draw line from player indicating reach
 
 	FVector LineTraceEnd = PlayerViewpointLocation + PlayerViewpointRotation.Vector() * Reach;
@@ -64,8 +60,25 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		5.f
 	);
 
-	//raycast out arm distance (reach)
 
+	FHitResult Hit;
+	//raycast out arm distance (reach)
+	FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
+	
+	GetWorld()->LineTraceSingleByObjectType(
+		OUT Hit,
+		PlayerViewpointLocation,
+		LineTraceEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		TraceParams
+	);
+
+	AActor* ActorHit = Hit.GetActor();
+
+	if (ActorHit)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Line trace hit %s"), *(ActorHit->GetName()));
+	}
 	//check raycast hits
 
 	// ...
