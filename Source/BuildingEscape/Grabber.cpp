@@ -23,12 +23,35 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("GRABBER ON"));
+	//UE_LOG(LogTemp, Warning, TEXT("GRABBER ON"));
 
-	
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if (PhysicsHandle)
+	{
+		//physics found
+	}
+	if (!PhysicsHandle)
+	{
+		UE_LOG(LogTemp, Error, TEXT("PHYSICS HANDLE MISSING ON OBJECT %s"), *GetOwner()->GetName());
+	}
+
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if (InputComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Input Component Found On %s"), *GetOwner()->GetName());
+		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+	}
+	else {
+		UE_LOG(LogTemp, Error, TEXT("Input Component MISSING On %s"), *GetOwner()->GetName());
+	}
 	
 }
 
+
+void UGrabber::Grab() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("GRABBER PRESSED"));
+}
 
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -77,7 +100,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	if (ActorHit)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Line trace hit %s"), *(ActorHit->GetName()));
+		UE_LOG(LogTemp, Warning, TEXT("Line trace hit %s"), *(ActorHit->GetName()));
 	}
 	//check raycast hits
 
