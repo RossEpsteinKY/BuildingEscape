@@ -1,8 +1,10 @@
 // Copyright Mad Skald Studios
 
-
+#include "GameFramework/PlayerController.h"
+#include "Engine/World.h"
 #include "Grabber.h"
 
+#define OUT
 // Sets default values for this component's properties
 UGrabber::UGrabber()
 {
@@ -19,7 +21,9 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	UE_LOG(LogTemp, Warning, TEXT("GRABBER ON"));
+
+	
 	
 }
 
@@ -28,7 +32,27 @@ void UGrabber::BeginPlay()
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	
+	//GetPlayers Viewpoint
+	FVector PlayerViewpointLocation;
+	FRotator PlayerViewpointRotation;
+
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+		OUT PlayerViewpointLocation, 
+		OUT PlayerViewpointRotation
+	);
+
+	UE_LOG(LogTemp, Warning, TEXT("VIEW LOC: %s VIEW ROT: %s"),
+		*PlayerViewpointLocation.ToString(),
+		*PlayerViewpointRotation.ToString()
+	);
+
+	//raycast out arm distance (reach)
+
+	//check raycast hits
 
 	// ...
 }
 
+ 
