@@ -42,8 +42,11 @@ private:
 	UInputComponent* InputComponent = nullptr;
 
 	// Return First Actor In Reach With Physics Body
-	FHitResult GetFirstPhysicBodyInReach() const;
+	FHitResult GetFirstPhysicsBodyInReach() const;
 
-	
+	//Return Line Trace End
+	FVector GetPlayersReach() const;
+
+	FVector GetPlayersWorldPos() const;
 		
 };
