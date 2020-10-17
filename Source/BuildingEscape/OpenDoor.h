@@ -26,6 +26,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void OpenDoor(float DeltaTime);
 	void CloseDoor(float DeltaTime);
+	float TotalMassOfActors() const;
 
 private:
 
@@ -52,5 +53,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	AActor* ActorThatOpens;
+
+	UPROPERTY(EditAnywhere)
+	float MassToOpen = 50.f;
 
 };

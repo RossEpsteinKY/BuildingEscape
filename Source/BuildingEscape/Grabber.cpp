@@ -28,11 +28,11 @@ void UGrabber::BeginPlay()
 //Checking for phsyics component
 void UGrabber::FindPhysicsHandle()
 {
-	UE_LOG(LogTemp, Warning, TEXT("GRABBER ON"));
+	//UE_LOG(LogTemp, Warning, TEXT("GRABBER ON"));
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 	if (PhysicsHandle == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("PHYSICS HANDLE MISSING ON OBJECT %s"), *GetOwner()->GetName());
+		//UE_LOG(LogTemp, Error, TEXT("PHYSICS HANDLE MISSING ON OBJECT %s"), *GetOwner()->GetName());
 	}
 
 
@@ -44,14 +44,14 @@ void UGrabber::SetupInput()
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 	if (InputComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Input Component Found On %s"), *GetOwner()->GetName());
+		//UE_LOG(LogTemp, Warning, TEXT("Input Component Found On %s"), *GetOwner()->GetName());
 
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 
 	}
 	else {
-		UE_LOG(LogTemp, Error, TEXT("Input Component MISSING On %s"), *GetOwner()->GetName());
+		//UE_LOG(LogTemp, Error, TEXT("Input Component MISSING On %s"), *GetOwner()->GetName());
 	}
 }
 
@@ -94,7 +94,7 @@ void UGrabber::Grab()
 	//TODO attach handle
 	if (HitResult.GetActor()) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HIT TRUE"));
+		//UE_LOG(LogTemp, Warning, TEXT("HIT TRUE"));
 		PhysicsHandle->GrabComponentAtLocation
 		(
 			ComponentToGrab,
@@ -110,7 +110,7 @@ void UGrabber::Grab()
 //Release functionality
 void UGrabber::Release() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("GRAB RELEASED"));
+	//UE_LOG(LogTemp, Warning, TEXT("GRAB RELEASED"));
 	//TODO Remove/release the physics object currently grabbed
 	PhysicsHandle->ReleaseComponent();
 }
@@ -133,7 +133,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 {
-	UE_LOG(LogTemp, Warning, TEXT("func called"));
+	//UE_LOG(LogTemp, Warning, TEXT("func called"));
 	FHitResult Hit;
 	//raycast out arm distance (reach)
 	FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
@@ -150,10 +150,10 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 
 	if (ActorHit)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Line trace hit %s"), *(ActorHit->GetName()));
+		//UE_LOG(LogTemp, Warning, TEXT("Line trace hit %s"), *(ActorHit->GetName()));
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("Nothing hit"));
+		//UE_LOG(LogTemp, Warning, TEXT("Nothing hit"));
 	}
 
 	//check raycast hits
