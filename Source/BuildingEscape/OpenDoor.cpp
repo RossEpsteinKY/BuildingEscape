@@ -3,6 +3,7 @@
 
 #include "Engine/World.h"
 #include "Components/PrimitiveComponent.h"
+#include "Components/AudioComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "OpenDoor.h"
 #include "GameFramework/Actor.h"
@@ -33,7 +34,13 @@ void UOpenDoor::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s OPEN DOOR COMPONENT ON OBJECT, NO PRESSUREPLATE SET!"), *GetOwner()->GetName());
 	}
+	FindAudioComponent();
+}
 
+void UOpenDoor::FindAudioComponent()
+{
+	AudioComponent = GetOwner()->FindComponentByClass<UAudioComponent>();
+	if (!AudioComponent) { return; }
 }
 
 
@@ -69,6 +76,18 @@ void UOpenDoor::OpenDoor(float DeltaTime)
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation(DoorRotation);
+
+	CloseDoorSound = false;
+	if (!AudioComponent) { return; }
+
+	if (!OpenDoorSound)
+	{
+		AudioComponent->Play();
+		OpenDoorSound = true;
+	}
+	
+	
+	
 }
 
 void UOpenDoor::CloseDoor(float DeltaTime)
@@ -77,6 +96,13 @@ void UOpenDoor::CloseDoor(float DeltaTime)
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation(DoorRotation);
+	if (!AudioComponent) { return; }
+	OpenDoorSound = false;
+	if (!CloseDoorSound)
+	{
+		AudioComponent->Play();
+		CloseDoorSound = true;
+	}
 }
 
 float UOpenDoor::TotalMassOfActors() const 

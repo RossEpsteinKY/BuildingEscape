@@ -38,7 +38,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float Reach = 100.f;
 
+	UPROPERTY()
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+	
+	UPROPERTY()
 	UInputComponent* InputComponent = nullptr;
 
 	// Return First Actor In Reach With Physics Body

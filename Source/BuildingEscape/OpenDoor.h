@@ -27,6 +27,7 @@ public:
 	void OpenDoor(float DeltaTime);
 	void CloseDoor(float DeltaTime);
 	float TotalMassOfActors() const;
+	void FindAudioComponent();
 
 private:
 
@@ -53,5 +54,11 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float MassToOpen = 50.f;
+
+	UPROPERTY()
+	UAudioComponent* AudioComponent = nullptr;
+
+	bool OpenDoorSound = false;
+	bool CloseDoorSound = true;
 
 };
